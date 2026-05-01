@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Traviata RQ — Restaurante Bar</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Cormorant+Garamond:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #e8c96b;
+    --dark: #0d0a06;
+    --dark-mid: #1a1409;
+    --dark-warm: #231b0e;
+    --cream: #f5eed8;
+    --cream-dim: #d4c9a8;
+    --red-deep: #7a1a1a;
+    --charcoal: #2a2218;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--dark);
+    color: var(--cream);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    overflow-x: hidden;
+  }
+
+  /* ========== HERO ========== */
+  .hero {
+    position: relative;
+    height: 100vh;
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: var(--dark);
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 60% 40%, rgba(201,168,76,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse at 20% 80%, rgba(122,26,26,0.18) 0%, transparent 50%),
+      linear-gradient(180deg, #0d0a06 0%, #1a1005 50%, #0d0a06 100%);
+  }
+
+  .hero-grain {
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  .hero-lines {
+    position: absolute; inset: 0;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 60px, rgba(201,168,76,0.03) 60px, rgba(201,168,76,0.03) 61px);
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative;
+    text-align: center;
+    padding: 2rem;
+    animation: fadeUp 1.2s ease forwards;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(0.7rem, 1.5vw, 0.9rem);
+    letter-spacing: 0.5em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.3s forwards;
+  }
+
+  .hero-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(5rem, 18vw, 14rem);
+    line-height: 0.85;
+    letter-spacing: 0.02em;
+    color: var(--cream);
+    text-shadow: 0 0 80px rgba(201,168,76,0.2);
+    opacity: 0;
+    animation: fadeUp 1s ease 0.5s forwards;
+  }
+
+  .hero-logo span {
+    display: block;
+    font-size: clamp(2.5rem, 8vw, 6rem);
+    color: var(--gold);
+    letter-spacing: 0.3em;
+  }
+
+  .hero-divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 1.5rem auto;
+    max-width: 320px;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.7s forwards;
+  }
+
+  .hero-divider::before, .hero-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+
+  .hero-divider-icon {
+    font-size: 1.2rem;
+    color: var(--gold);
+  }
+
+  .hero-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(0.75rem, 2vw, 1rem);
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+    opacity: 0;
+    animation: fadeUp 1s ease 0.9s forwards;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0;
+    animation: fadeUp 1s ease 1.2s forwards;
+  }
+
+  .hero-scroll span {
+    font-size: 0.65rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(180deg, var(--gold), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+  }
+
+  /* ========== NAV ========== */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(180deg, rgba(13,10,6,0.95) 0%, transparent 100%);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(201,168,76,0.1);
+  }
+
+  .nav-brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+    text-decoration: none;
+    transition: color 0.3s;
+    position: relative;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -3px; left: 0;
+    width: 0; height: 1px;
+    background: var(--gold);
+    transition: width 0.3s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+  .nav-links a:hover::after { width: 100%; }
+
+  /* ========== SECTIONS ========== */
+  section {
+    padding: 6rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .section-eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.6em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 8vw, 6rem);
+    letter-spacing: 0.05em;
+    line-height: 1;
+    color: var(--cream);
+  }
+
+  .section-rule {
+    width: 60px;
+    height: 2px;
+    background: var(--gold);
+    margin: 1.5rem auto;
+  }
+
+  /* ========== CATEGORY TABS ========== */
+  .tab-bar {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 3.5rem;
+  }
+
+  .tab-btn {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    padding: 0.6rem 1.4rem;
+    border: 1px solid rgba(201,168,76,0.3);
+    background: transparent;
+    color: var(--cream-dim);
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .tab-btn.active, .tab-btn:hover {
+    background: var(--gold);
+    color: var(--dark);
+    border-color: var(--gold);
+  }
+
+  /* ========== MENU PANELS ========== */
+  .menu-panel { display: none; }
+  .menu-panel.active { display: block; animation: panelFade 0.4s ease; }
+
+  @keyframes panelFade {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ========== MENU GRID ========== */
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5px;
+    background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.15);
+  }
+
+  .menu-item {
+    background: var(--dark-mid);
+    padding: 1.8rem 2rem;
+    position: relative;
+    transition: background 0.3s;
+  }
+
+  .menu-item:hover { background: var(--dark-warm); }
+
+  .menu-item-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.6rem;
+    gap: 1rem;
+  }
+
+  .menu-item-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--cream);
+    line-height: 1.2;
+  }
+
+  .menu-item-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.05em;
+    color: var(--gold);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .menu-item-desc {
+    font-size: 0.85rem;
+    line-height: 1.55;
+    color: rgba(212,201,168,0.65);
+    font-style: italic;
+  }
+
+  .menu-item-accent {
+    position: absolute;
+    left: 0; top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 0;
+    background: var(--gold);
+    transition: height 0.3s;
+  }
+
+  .menu-item:hover .menu-item-accent { height: 60%; }
+
+  /* ========== FULL WIDTH BANNER ========== */
+  .full-banner {
+    width: 100%;
+    background: var(--dark-warm);
+    border-top: 1px solid rgba(201,168,76,0.2);
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+    padding: 4rem 2rem;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .full-banner::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, rgba(201,168,76,0.08) 0%, transparent 70%);
+  }
+
+  .marquee-wrap {
+    overflow: hidden;
+    margin-bottom: 0;
+  }
+
+  .marquee {
+    display: flex;
+    gap: 3rem;
+    animation: marquee 20s linear infinite;
+    white-space: nowrap;
+  }
+
+  .marquee-item {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    letter-spacing: 0.15em;
+    color: rgba(201,168,76,0.25);
+    flex-shrink: 0;
+  }
+
+  .marquee-item.accent { color: rgba(201,168,76,0.6); }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ========== FEATURED ITEMS ========== */
+  .featured-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: rgba(201,168,76,0.1);
+  }
+
+  @media (max-width: 700px) {
+    .featured-grid { grid-template-columns: 1fr; }
+  }
+
+  .featured-card {
+    background: var(--dark-mid);
+    padding: 3rem 2.5rem;
+    text-align: center;
+    transition: background 0.3s;
+    cursor: default;
+  }
+
+  .featured-card:hover { background: var(--charcoal); }
+
+  .featured-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem;
+    color: rgba(201,168,76,0.12);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .featured-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--cream);
+    margin-bottom: 0.75rem;
+  }
+
+  .featured-desc {
+    font-size: 0.85rem;
+    color: rgba(212,201,168,0.55);
+    line-height: 1.6;
+    font-style: italic;
+    margin-bottom: 1.2rem;
+  }
+
+  .featured-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+  }
+
+  /* ========== COCKTAILS ========== */
+  .cocktail-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+  }
+
+  .cocktail-card {
+    border: 1px solid rgba(201,168,76,0.15);
+    padding: 2rem;
+    position: relative;
+    background: linear-gradient(135deg, var(--dark-mid) 0%, var(--dark-warm) 100%);
+    transition: border-color 0.3s, transform 0.3s;
+  }
+
+  .cocktail-card:hover {
+    border-color: rgba(201,168,76,0.5);
+    transform: translateY(-4px);
+  }
+
+  .cocktail-corner {
+    position: absolute;
+    top: -1px; right: -1px;
+    width: 24px; height: 24px;
+    border-top: 2px solid var(--gold);
+    border-right: 2px solid var(--gold);
+  }
+
+  .cocktail-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--cream);
+    margin-bottom: 0.6rem;
+  }
+
+  .cocktail-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.8rem;
+  }
+
+  .cocktail-desc {
+    font-size: 0.83rem;
+    color: rgba(212,201,168,0.6);
+    line-height: 1.6;
+    font-style: italic;
+  }
+
+  /* ========== DRINKS GRID ========== */
+  .drinks-columns {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 3rem;
+  }
+
+  .drinks-section h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(201,168,76,0.25);
+  }
+
+  .drink-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.55rem 0;
+    border-bottom: 1px dotted rgba(201,168,76,0.1);
+    font-size: 0.9rem;
+  }
+
+  .drink-name { color: var(--cream-dim); }
+  .drink-price { color: var(--gold); font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.05em; font-size: 0.95rem; }
+
+  /* ========== FOOTER ========== */
+  footer {
+    background: var(--dark);
+    border-top: 1px solid rgba(201,168,76,0.2);
+    padding: 4rem 2rem 2.5rem;
+    text-align: center;
+  }
+
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .footer-sub {
+    font-size: 0.75rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+    margin-top: 0.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .footer-rule {
+    width: 40px;
+    height: 1px;
+    background: rgba(201,168,76,0.4);
+    margin: 0 auto 1.5rem;
+  }
+
+  .footer-social {
+    font-size: 0.8rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(201,168,76,0.6);
+    margin-bottom: 2rem;
+  }
+
+  .footer-copy {
+    font-size: 0.75rem;
+    color: rgba(212,201,168,0.3);
+    letter-spacing: 0.15em;
+  }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 4rem 1.2rem; }
+    .featured-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ========== SCROLL REVEAL ========== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-brand">La Traviata RQ</a>
+  <ul class="nav-links">
+    <li><a href="#menu">Carta</a></li>
+    <li><a href="#recomendados">Recomendados</a></li>
+    <li><a href="#cocteles">Cócteles</a></li>
+    <li><a href="#bebidas">Bebidas</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grain"></div>
+  <div class="hero-lines"></div>
+  <div class="hero-content">
+    <p class="hero-tagline">Restaurante · Bar · Parrilla</p>
+    <div class="hero-logo">
+      La<br>Traviata<span>RQ</span>
+    </div>
+    <div class="hero-divider"><div class="hero-divider-icon">✦</div></div>
+    <p class="hero-sub">Un lugar donde la gastronomía cobra vida</p>
+  </div>
+  <div class="hero-scroll">
+    <span>Descubrir</span>
+    <div class="scroll-line"></div>
+  </div>
+</div>
+
+<!-- MARQUEE BANNER -->
+<div class="full-banner">
+  <div class="marquee-wrap">
+    <div class="marquee">
+      <span class="marquee-item">ENTRADAS</span>
+      <span class="marquee-item accent">✦</span>
+      <span class="marquee-item">CORTES DE RES</span>
+      <span class="marquee-item accent">✦</span>
+      <span class="marquee-item">BÚFALO</span>
+      <span class="marquee-item accent">✦</span>
+      <span class="marquee-item">CERDO</span>
+      <span class="marquee-item accent">✦</span>
+      <span class="marquee-item">PARRILLA</span>
+      <span class="marquee-item accent">✦</span>
+      <span class="marquee-item">SALMÓN</span>
+      <span class="marquee-item accent">✦</span>
+      <span class="marquee-item">HAMBURGUESAS</span>
+      <span class="marquee-item accent">✦</span>
+      <span class="marquee-item">CÓCTELES</span>
+      <span class="marquee-item accent">✦</span>
+      <!-- repeat -->
+      <span class="marquee-item">ENTRADAS</span>
+      <span class="marquee-item accent">✦</span>
+      <span class="marquee-item">CORTES DE RES</span>
+      <span class="marquee-item accent">✦</span>
+      <span class="marquee-item">BÚFALO</span>
+      <span class="marquee-item accent">✦</span>
+      <span class="marquee-item">CERDO</span>
+      <span class="marquee-item accent">✦</span>
+      <span class="marquee-item">PARRILLA</span>
+      <span class="marquee-item accent">✦</span>
+      <span class="marquee-item">SALMÓN</span>
+      <span class="marquee-item accent">✦</span>
+      <span class="marquee-item">HAMBURGUESAS</span>
+      <span class="marquee-item accent">✦</span>
+      <span class="marquee-item">CÓCTELES</span>
+      <span class="marquee-item accent">✦</span>
+    </div>
+  </div>
+</div>
+
+<!-- RECOMENDADOS -->
+<div id="recomendados" style="background: var(--dark-warm); padding: 0; border-bottom: 1px solid rgba(201,168,76,0.1);">
+<section style="max-width:1200px; margin:0 auto;">
+  <div class="section-header reveal">
+    <span class="section-eyebrow">Selección del chef</span>
+    <h2 class="section-title">Recomendados</h2>
+    <div class="section-rule"></div>
+  </div>
+  <div class="featured-grid reveal">
+    <div class="featured-card">
+      <div class="featured-num">01</div>
+      <div class="featured-name">Parrillada La Traviata RQ</div>
+      <div class="featured-desc">130gr chata res, 130gr pechuga, 130gr lomo de cerdo, 1 chorizo, yuca y maduro al vapor.</div>
+      <div class="featured-price">$46.000</div>
+    </div>
+    <div class="featured-card">
+      <div class="featured-num">02</div>
+      <div class="featured-name">Picada Montañera x 2</div>
+      <div class="featured-desc">Res, pechuga, costilla BBQ, chorizo, morcilla, mazorca en suero, yuca frita y papa criolla.</div>
+      <div class="featured-price">$67.500</div>
+    </div>
+    <div class="featured-card">
+      <div class="featured-num">03</div>
+      <div class="featured-name">Salmón en Camarones</div>
+      <div class="featured-desc">300gr de salmón recubierto en salsa de camarones, patacones y ensalada tradicional.</div>
+      <div class="featured-price">$71.000</div>
+    </div>
+    <div class="featured-card">
+      <div class="featured-num">04</div>
+      <div class="featured-name">Filet Mignon</div>
+      <div class="featured-desc">300gr lomo fino, bardado en tocineta, crema de maduro y Jack Daniel Honey, papas casco.</div>
+      <div class="featured-price">$75.000</div>
+    </div>
+    <div class="featured-card">
+      <div class="featured-num">05</div>
+      <div class="featured-name">Barbacoa de Res</div>
+      <div class="featured-desc">400gr punta de anca ahumada y marinada 7 horas en horno ahumador. Yuca y maduro al vapor.</div>
+      <div class="featured-price">$56.000</div>
+    </div>
+    <div class="featured-card">
+      <div class="featured-num">06</div>
+      <div class="featured-name">Punta Alta Mar</div>
+      <div class="featured-desc">350gr punta de anca bañada con 120gr de camarones al ajillo, papa casco.</div>
+      <div class="featured-price">$64.000</div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- MAIN MENU -->
+<section id="menu" style="max-width:1200px; margin:0 auto;">
+  <div class="section-header reveal">
+    <span class="section-eyebrow">Nuestra</span>
+    <h2 class="section-title">Carta</h2>
+    <div class="section-rule"></div>
+  </div>
+
+  <div class="tab-bar reveal">
+    <button class="tab-btn active" onclick="showTab('entradas', this)">Entradas</button>
+    <button class="tab-btn" onclick="showTab('res', this)">Res</button>
+    <button class="tab-btn" onclick="showTab('bufalo', this)">Búfalo</button>
+    <button class="tab-btn" onclick="showTab('cerdo', this)">Cerdo</button>
+    <button class="tab-btn" onclick="showTab('pollo', this)">Pollo</button>
+    <button class="tab-btn" onclick="showTab('hamburguesas', this)">Hamburguesas</button>
+    <button class="tab-btn" onclick="showTab('express', this)">Express</button>
+    <button class="tab-btn" onclick="showTab('pastas', this)">Pastas</button>
+    <button class="tab-btn" onclick="showTab('infantil', this)">Infantil</button>
+  </div>
+
+  <!-- ENTRADAS -->
+  <div id="tab-entradas" class="menu-panel active">
+    <div class="menu-grid">
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Morcilla</span><span class="menu-item-price">$13.500</span></div><p class="menu-item-desc">2 unidades (160gr) acompañada de yucas al vapor.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Madurito Fundido</span><span class="menu-item-price">$17.000</span></div><p class="menu-item-desc">Maduro a la parrilla, bocadillo, gratinado en queso mozzarella y queso costeño.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Chorizo de Cerdo</span><span class="menu-item-price">$20.000</span></div><p class="menu-item-desc">4 und de chorizo artesanal a la parrilla, yuca al vapor.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Minichorizo Caña Dulce</span><span class="menu-item-price">$21.000</span></div><p class="menu-item-desc">10 und caramelizados a la parrilla con arepa de maíz.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Chicharrón</span><span class="menu-item-price">$23.500</span></div><p class="menu-item-desc">320gr de chicharrón fazenda con yuca al vapor.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Canasta Ahogadas</span><span class="menu-item-price">$24.000</span></div><p class="menu-item-desc">3 canastas de plátano rellenas de carne desmechada en salsa ahogada de la casa.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Canasta de Camarones</span><span class="menu-item-price">$29.000</span></div><p class="menu-item-desc">3 canastas de plátano rellenas de 150gr de camarones en su salsa.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Mazorca en Queso Búfalo</span><span class="menu-item-price">$13.500</span></div><p class="menu-item-desc">Mazorca asada bañada en suero y cubierta en queso costeño.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Patacones con Queso Búfalo</span><span class="menu-item-price">$14.000</span></div><p class="menu-item-desc">4 patacones con delicioso queso de búfalo con suero.</p></div>
+    </div>
+  </div>
+
+  <!-- RES -->
+  <div id="tab-res" class="menu-panel">
+    <div class="menu-grid">
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Baby Beef</span><span class="menu-item-price">$59.000</span></div><p class="menu-item-desc">350gr de lomo fino, corte magro y suave, yuca y maduro al vapor.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Sobrebarriga al Vino</span><span class="menu-item-price">$49.000</span></div><p class="menu-item-desc">300gr en corte plano, salsa de vino tinto, papas casco.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Filet Mignon</span><span class="menu-item-price">$75.000</span></div><p class="menu-item-desc">300gr lomo fino bardado en tocineta, crema de maduro y Jack Daniel Honey, papas casco.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Lomo Texano</span><span class="menu-item-price">$75.000</span></div><p class="menu-item-desc">300gr lomo fino bardado en tocineta, salsa de tres quesos, papas casco.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Punta de Anca</span><span class="menu-item-price">$52.000</span></div><p class="menu-item-desc">350gr carne suave con borde de grasa, yuca y maduro al vapor.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Lengua en Salsa de Vino</span><span class="menu-item-price">$45.500</span></div><p class="menu-item-desc">300gr en corte mariposa, salsa de vino, papas casco.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Lengua en Salsa de la Casa</span><span class="menu-item-price">$43.000</span></div><p class="menu-item-desc">300gr en corte mariposa, salsa criolla de la casa, papas casco.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Chata</span><span class="menu-item-price">$48.000</span></div><p class="menu-item-desc">350gr carne suave con delgado borde de grasa, yuca y maduro al vapor.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Chata en Bistec a Caballo</span><span class="menu-item-price">$51.000</span></div><p class="menu-item-desc">350gr chata en corte mariposa, bistec de la casa y huevo frito, yuca y maduro.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Wok de Vegetales</span><span class="menu-item-price">$40.000</span></div><p class="menu-item-desc">250gr lomo fino salteado con especias y vegetales frescos, papa a la francesa.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Punta Alta Mar</span><span class="menu-item-price">$64.000</span></div><p class="menu-item-desc">350gr punta de anca bañada con 120gr de camarones al ajillo, papa casco.</p></div>
+    </div>
+  </div>
+
+  <!-- BÚFALO -->
+  <div id="tab-bufalo" class="menu-panel">
+    <div class="menu-grid">
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Punta de Anca de Búfalo</span><span class="menu-item-price">$53.000</span></div><p class="menu-item-desc">350gr de carne suave con delgado borde de grasa, yuca y maduro al vapor.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Chata de Búfalo</span><span class="menu-item-price">$50.000</span></div><p class="menu-item-desc">350gr de carne suave con delgado borde de grasa, yuca y maduro al vapor.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Baby Beef de Búfalo</span><span class="menu-item-price">$60.000</span></div><p class="menu-item-desc">350gr lomo fino, corte magro y suave en el paladar, yuca y maduro al vapor.</p></div>
+    </div>
+  </div>
+
+  <!-- CERDO -->
+  <div id="tab-cerdo" class="menu-panel">
+    <div class="menu-grid">
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Costillas BBQ</span><span class="menu-item-price">$39.000</span></div><p class="menu-item-desc">300gr de costillas bañadas en salsa BBQ, papas francesas.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Chata de Cerdo</span><span class="menu-item-price">$32.000</span></div><p class="menu-item-desc">350gr carne suave con delgado borde de grasa, yuca y maduro al vapor.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Punta de Anca de Cerdo</span><span class="menu-item-price">$34.000</span></div><p class="menu-item-desc">350gr carne suave con borde de grasa, yuca y maduro al vapor.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Chuleta La Traviata RQ — 500gr</span><span class="menu-item-price">$48.000</span></div><p class="menu-item-desc">Medallones de chuleta, yuca y maduro al vapor.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Chuleta La Traviata RQ — 250gr</span><span class="menu-item-price">$25.000</span></div><p class="menu-item-desc">Medallones de chuleta, yuca y maduro al vapor.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Bondiola de Cerdo</span><span class="menu-item-price">$42.000</span></div><p class="menu-item-desc">400gr punta de anca de cerdo ahumada y marinada 7 horas en horno ahumador, yuca y maduro.</p></div>
+    </div>
+  </div>
+
+  <!-- POLLO -->
+  <div id="tab-pollo" class="menu-panel">
+    <div class="menu-grid">
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Pollo a la Jardinera</span><span class="menu-item-price">$38.000</span></div><p class="menu-item-desc">250gr pollo en verduras (maíz, champiñones, pimentón) en salsa blanca, papas francesa.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Pechuga a la Parrilla</span><span class="menu-item-price">$34.000</span></div><p class="menu-item-desc">320gr pechuga asada, papas francesa y ensalada tradicional.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Pechuga Gratinada</span><span class="menu-item-price">$41.000</span></div><p class="menu-item-desc">320gr pechuga gratinada en queso mozzarella, papas francesa y ensalada tropical.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Pechuga Marinera</span><span class="menu-item-price">$49.000</span></div><p class="menu-item-desc">200gr pechuga recubierta en salsa de camarones, patacones.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Pechuga en Salsa Champiñones</span><span class="menu-item-price">$40.000</span></div><p class="menu-item-desc">320gr pechuga en salsa de champiñones, papas francesa y ensalada tropical.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Alitas BBQ / Miel Mostaza</span><span class="menu-item-price">$28.000</span></div><p class="menu-item-desc">8 und de alitas en salsa a elección, papas francesa.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Pechuga Hawaiana</span><span class="menu-item-price">$41.000</span></div><p class="menu-item-desc">350gr pechuga con bacon, mozzarella, piña en almíbar, salsa carbonara, papa francesa y ensalada agridulce.</p></div>
+    </div>
+  </div>
+
+  <!-- HAMBURGUESAS -->
+  <div id="tab-hamburguesas" class="menu-panel">
+    <div class="menu-grid">
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Hamburguesa Tradicional</span><span class="menu-item-price">$27.000</span></div><p class="menu-item-desc">Pan brioche 180gr carne de res, jamón, queso mozzarella, vegetales, papas francesas.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Hamburguesa de Pollo</span><span class="menu-item-price">$24.000</span></div><p class="menu-item-desc">Pan brioche 150gr filete de pechuga, vegetales, jamón, mozzarella, papas francesas.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Hamburguesa Mixta</span><span class="menu-item-price">$34.000</span></div><p class="menu-item-desc">Pan brioche 180gr carne res + 120gr pechuga, jamón, mozzarella, papas francesas.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Hamburguesa Traviata RQ</span><span class="menu-item-price">$34.000</span></div><p class="menu-item-desc">Pan brioche 180gr carne, chorizo, jamón, vegetales, mozzarella, papas francesas.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Hamburguesa La Contentosa</span><span class="menu-item-price">$33.000</span></div><p class="menu-item-desc">Pan de papa 150gr, cebolla envinada, queso americano, mozzarella, philadelphia, tocineta crocante, BBQ.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Hamburguesa Guadalupana</span><span class="menu-item-price">$36.000</span></div><p class="menu-item-desc">Pan de papa 150gr, tocineta, queso americano, mozzarella, queso asado de búfalo, relish de pepinillos.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Hamburguesa La Girola</span><span class="menu-item-price">$39.000</span></div><p class="menu-item-desc">Pan de papa 300gr, doble tocineta, mozzarella, vegetales, salsa de pepinillos, papas francesas.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Búfalo Picante</span><span class="menu-item-price">$30.500</span></div><p class="menu-item-desc">Pan brioche 180gr carne búfalo, jalapeño, tocineta, mozzarella, papas francesas.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Búfalo Traviata RQ</span><span class="menu-item-price">$34.000</span></div><p class="menu-item-desc">Pan brioche 180gr búfalo, chorizo, tocineta, vegetales, mozzarella, papas francesas.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Búfalo Tradicional</span><span class="menu-item-price">$29.500</span></div><p class="menu-item-desc">Pan brioche 180gr búfalo, tocineta, vegetales, mozzarella, papas francesas.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Búfalo Doble Carne</span><span class="menu-item-price">$49.500</span></div><p class="menu-item-desc">Pan brioche 360gr búfalo, tocineta, mozzarella, papas francesas.</p></div>
+    </div>
+  </div>
+
+  <!-- EXPRESS -->
+  <div id="tab-express" class="menu-panel">
+    <div class="menu-grid">
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Desgranado</span><span class="menu-item-price">$32.500</span></div><p class="menu-item-desc">Mix de carnes 250gr (butifarra, chorizo, lomo cerdo, pollo), maíz, lechuga, queso gratinado en papas ripio.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Perro Tradicional</span><span class="menu-item-price">$20.000</span></div><p class="menu-item-desc">Salchicha americana, papa ripio, queso gratinado, tocineta, papa francesa.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Perro Traviata RQ</span><span class="menu-item-price">$24.000</span></div><p class="menu-item-desc">Salchicha americana, mix de carnes, queso gratinado, papa francesa.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Crepes a la Carbonara</span><span class="menu-item-price">$35.000</span></div><p class="menu-item-desc">Crepes rellenos de pollo, champiñones, maíz, tocineta en salsa carbonara, papa francesa.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Crepes Camaronero</span><span class="menu-item-price">$39.500</span></div><p class="menu-item-desc">Crepes rellenos de camarones en su salsa, papa francesa.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Papas Locas</span><span class="menu-item-price">$29.000</span></div><p class="menu-item-desc">Mix de carnes, maíz, papas francesas, lechuga batavia, queso gratinado y salsas.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Papas Mar y Tierra</span><span class="menu-item-price">$34.000</span></div><p class="menu-item-desc">Papas francesas, mix de carnes, aros de cebolla crocante, camarones en salsa del chef, queso rayado.</p></div>
+    </div>
+  </div>
+
+  <!-- PASTAS -->
+  <div id="tab-pastas" class="menu-panel">
+    <div class="menu-grid">
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Fettuccine Camaronero</span><span class="menu-item-price">$48.000</span></div><p class="menu-item-desc">80gr de pasta, 120gr de camarones en salsa marinera, tostadas finas hierbas.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Fettuccine Carbonara</span><span class="menu-item-price">$35.000</span></div><p class="menu-item-desc">80gr de pasta, pollo, tocineta y champiñones en salsa carbonara, tostadas finas hierbas.</p></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Pastas Cremosas</span><span class="menu-item-price">$65.000</span></div><p class="menu-item-desc">350gr de baby beef acompañado de fettuccines cremosos en salsa de la casa, tostadas finas hiervas.</p></div>
+    </div>
+  </div>
+
+  <!-- INFANTIL -->
+  <div id="tab-infantil" class="menu-panel">
+    <div class="menu-grid">
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Hamburguesa Bufalita</span><span class="menu-item-price">$22.000</span></div></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Hamburguesa Ternerita</span><span class="menu-item-price">$20.500</span></div></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Brocheta de Pollo Apanada</span><span class="menu-item-price">$18.000</span></div></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Nuggets de Pollo</span><span class="menu-item-price">$18.000</span></div></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Mini Salchipapa</span><span class="menu-item-price">$15.000</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CÓCTELES -->
+<div style="background: var(--dark-warm); border-top: 1px solid rgba(201,168,76,0.12);">
+<section id="cocteles" style="max-width:1200px; margin:0 auto;">
+  <div class="section-header reveal">
+    <span class="section-eyebrow">Bar</span>
+    <h2 class="section-title">Cócteles</h2>
+    <div class="section-rule"></div>
+  </div>
+  <div class="cocktail-list reveal">
+    <div class="cocktail-card"><div class="cocktail-corner"></div><div class="cocktail-name">Tom Collins</div><div class="cocktail-price">$23.000</div><p class="cocktail-desc">Mezcla explosiva de ginebra, syrop simple, zumo de limón y top de soda.</p></div>
+    <div class="cocktail-card"><div class="cocktail-corner"></div><div class="cocktail-name">Baileys Passion</div><div class="cocktail-price">$26.000</div><p class="cocktail-desc">Baileys con licor de café y vodka para resaltar su sabor irresistible.</p></div>
+    <div class="cocktail-card"><div class="cocktail-corner"></div><div class="cocktail-name">Mojito</div><div class="cocktail-price">$23.000</div><p class="cocktail-desc">Clásico ron aromatizado con hierbabuena, notas cítricas y dulces.</p></div>
+    <div class="cocktail-card"><div class="cocktail-corner"></div><div class="cocktail-name">Piña Colada</div><div class="cocktail-price">$30.000</div><p class="cocktail-desc">Del Caribe a tu mesa, sabores tropicales con predominante ron.</p></div>
+    <div class="cocktail-card"><div class="cocktail-corner"></div><div class="cocktail-name">Cuba Libre</div><div class="cocktail-price">$23.000</div><p class="cocktail-desc">Ron añejo, cola, limón, sal, agua mineral y azúcar. Un clásico cubano.</p></div>
+    <div class="cocktail-card"><div class="cocktail-corner"></div><div class="cocktail-name">Margarita</div><div class="cocktail-price">$26.000</div><p class="cocktail-desc">Tequila y cítricos. Disponible Clásica, Maracuyá o Fresa — frozen en frutas.</p></div>
+    <div class="cocktail-card"><div class="cocktail-corner"></div><div class="cocktail-name">Sangría</div><div class="cocktail-price">$25.000</div><p class="cocktail-desc">Vino tinto con mix de frutas, originaria de España y Portugal.</p></div>
+    <div class="cocktail-card"><div class="cocktail-corner"></div><div class="cocktail-name">El Señorazo</div><div class="cocktail-price">$23.000</div><p class="cocktail-desc">Vodka con sirope de jengibre. Efervescente, cálido y especiado.</p></div>
+    <div class="cocktail-card"><div class="cocktail-corner"></div><div class="cocktail-name">Elixir del Bosque</div><div class="cocktail-price">$28.000</div><p class="cocktail-desc">Ginebra con frutos rojos y notas cítricas. Una fusión de sabor memorable.</p></div>
+  </div>
+</section>
+</div>
+
+<!-- BEBIDAS -->
+<section id="bebidas" style="max-width:1200px; margin:0 auto;">
+  <div class="section-header reveal">
+    <span class="section-eyebrow">Para acompañar</span>
+    <h2 class="section-title">Bebidas</h2>
+    <div class="section-rule"></div>
+  </div>
+  <div class="drinks-columns reveal">
+    <div class="drinks-section">
+      <h3>Bebidas</h3>
+      <div class="drink-row"><span class="drink-name">Soda</span><span class="drink-price">$4.000</span></div>
+      <div class="drink-row"><span class="drink-name">Coca-Cola Personal</span><span class="drink-price">$5.000</span></div>
+      <div class="drink-row"><span class="drink-name">Hit P500</span><span class="drink-price">$4.500</span></div>
+      <div class="drink-row"><span class="drink-name">Canada Dry</span><span class="drink-price">$4.500</span></div>
+      <div class="drink-row"><span class="drink-name">Gaseosa 1.5Lt</span><span class="drink-price">$9.000</span></div>
+      <div class="drink-row"><span class="drink-name">Gaseosa Mega</span><span class="drink-price">$16.000</span></div>
+      <div class="drink-row"><span class="drink-name">Botella de Agua</span><span class="drink-price">$4.000</span></div>
+      <div class="drink-row"><span class="drink-name">Jarra de Limonada</span><span class="drink-price">$13.500</span></div>
+      <div class="drink-row"><span class="drink-name">Vaso de Limonada</span><span class="drink-price">$6.000</span></div>
+      <div class="drink-row"><span class="drink-name">Soda Hatsu</span><span class="drink-price">$5.000</span></div>
+    </div>
+    <div class="drinks-section">
+      <h3>Granizados</h3>
+      <div class="drink-row"><span class="drink-name">Coco</span><span class="drink-price">$14.000</span></div>
+      <div class="drink-row"><span class="drink-name">Limón</span><span class="drink-price">$14.000</span></div>
+      <div class="drink-row"><span class="drink-name">Sandía</span><span class="drink-price">$14.000</span></div>
+      <div class="drink-row"><span class="drink-name">Cereza</span><span class="drink-price">$14.000</span></div>
+      <div class="drink-row"><span class="drink-name">Naranja</span><span class="drink-price">$14.000</span></div>
+      <div class="drink-row"><span class="drink-name">Maracuyá</span><span class="drink-price">$14.000</span></div>
+      <div class="drink-row"><span class="drink-name">Yerba Buena</span><span class="drink-price">$14.000</span></div>
+      <div class="drink-row"><span class="drink-name">Café</span><span class="drink-price">$16.000</span></div>
+      <h3 style="margin-top:1.5rem;">Sodas Frutales</h3>
+      <div class="drink-row"><span class="drink-name">Frutos Rojos</span><span class="drink-price">$15.000</span></div>
+      <div class="drink-row"><span class="drink-name">Frutos Amarillos</span><span class="drink-price">$15.000</span></div>
+    </div>
+    <div class="drinks-section">
+      <h3>Cervezas</h3>
+      <div class="drink-row"><span class="drink-name">Poker</span><span class="drink-price">$5.000</span></div>
+      <div class="drink-row"><span class="drink-name">Club Colombia</span><span class="drink-price">$6.000</span></div>
+      <div class="drink-row"><span class="drink-name">Corona</span><span class="drink-price">$7.000</span></div>
+      <div class="drink-row"><span class="drink-name">Coronita</span><span class="drink-price">$5.000</span></div>
+      <div class="drink-row"><span class="drink-name">Águila Original</span><span class="drink-price">$5.000</span></div>
+      <div class="drink-row"><span class="drink-name">Costeñita</span><span class="drink-price">$4.000</span></div>
+      <div class="drink-row"><span class="drink-name">Stella Artois</span><span class="drink-price">$7.000</span></div>
+    </div>
+    <div class="drinks-section">
+      <h3>Tragos Cortos</h3>
+      <div class="drink-row"><span class="drink-name">Copa de Vino Tinto</span><span class="drink-price">$23.000</span></div>
+      <div class="drink-row"><span class="drink-name">Tequila Jose Cuervo</span><span class="drink-price">$14.000</span></div>
+      <div class="drink-row"><span class="drink-name">Whisky</span><span class="drink-price">$25.000</span></div>
+      <div class="drink-row"><span class="drink-name">Aguardiente</span><span class="drink-price">$12.000</span></div>
+      <div class="drink-row"><span class="drink-name">Ron</span><span class="drink-price">$18.000</span></div>
+      <h3 style="margin-top:1.5rem;">Licores</h3>
+      <div class="drink-row"><span class="drink-name">Buchanan's Master 750ml</span><span class="drink-price">$280.000</span></div>
+      <div class="drink-row"><span class="drink-name">Jose Cuervo 750ml</span><span class="drink-price">$170.000</span></div>
+      <div class="drink-row"><span class="drink-name">1800 Tequila Añejo</span><span class="drink-price">$300.000</span></div>
+      <div class="drink-row"><span class="drink-name">Aguardiente Antioqueño ½</span><span class="drink-price">$55.000</span></div>
+      <div class="drink-row"><span class="drink-name">Vino Finca Las Moras</span><span class="drink-price">$95.000</span></div>
+      <div class="drink-row"><span class="drink-name">Vino Gato Negro</span><span class="drink-price">$75.000</span></div>
+      <div class="drink-row"><span class="drink-name">Casillero del Diablo</span><span class="drink-price">$90.000</span></div>
+      <div class="drink-row"><span class="drink-name">JP Chenet 750ml</span><span class="drink-price">$95.000</span></div>
+    </div>
+  </div>
+
+  <!-- ADICIONALES -->
+  <div style="margin-top: 4rem;" class="reveal">
+    <div style="text-align:center; margin-bottom:2rem;">
+      <span class="section-eyebrow">Para completar tu plato</span>
+      <h3 style="font-family:'Bebas Neue',sans-serif; font-size:2.5rem; color:var(--cream); letter-spacing:0.05em;">Adicionales</h3>
+    </div>
+    <div class="menu-grid" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));">
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Ensalada Tradicional</span><span class="menu-item-price">$10.000</span></div></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Ensalada Tropical</span><span class="menu-item-price">$18.000</span></div></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Papas a la Francesa</span><span class="menu-item-price">$5.500</span></div></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Papa / Yuca al Vapor</span><span class="menu-item-price">$4.000</span></div></div>
+      <div class="menu-item"><div class="menu-item-accent"></div><div class="menu-item-top"><span class="menu-item-name">Maduro Caramelizado</span><span class="menu-item-price">$6.000</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">La Traviata</div>
+  <div style="font-family:'Bebas Neue',sans-serif; font-size:1.2rem; color:var(--gold); letter-spacing:0.3em;">RQ</div>
+  <div class="footer-sub">Restaurante · Bar</div>
+  <div class="footer-rule"></div>
+  <div class="footer-social">@la_traviata_restaurante</div>
+  <div class="footer-copy">Un lugar donde la gastronomía cobra vida</div>
+</footer>
+
+<script>
+  // Tab switching
+  function showTab(id, btn) {
+    document.querySelectorAll('.menu-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
